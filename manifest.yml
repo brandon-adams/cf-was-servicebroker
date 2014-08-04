@@ -1,0 +1,9 @@
+---
+applications:
+- name: was-broker
+  memory: 512M
+  instances: 1
+  host: was-broker
+  path: build/libs/was-service-broker-0.1.0.war
+  env:
+     JAVA_OPTS : "-Duser.timezone=GMT"

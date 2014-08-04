@@ -1,0 +1,10 @@
+{
+"name" : "Websphere",
+"description" : "Websphere Application Server Service",
+"bindable" : true,
+"tags" : ["websphere", "app server", "POC"],
+"metadata" : {
+"longDescription" : "A POC service broker for a Websphere Application Server. Connects to the server and creates deployment managers (services), and managed nodes (bindings)",
+"imageUrl" : ""
+}
+}

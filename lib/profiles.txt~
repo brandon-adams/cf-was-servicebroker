@@ -1,0 +1,30 @@
+-create -profileName "testProfile" -adminUserName "admin" -adminPassword "password" -nodePortsFile "/opt/IBM/WebSphere/AppServer/logs/manageprofiles/1403634092897_cellNode_portdef.props" -enableAdminSecurity "true" -cellName "managerCell" -nodeName "managerNode" -portsFile "/opt/IBM/WebSphere/AppServer/logs/manageprofiles/1403634085401_cellDmgr_portdef.props" -personalCertDN "cn=192.168.0.126,ou=managerCell,ou=managerNode,o=IBM,c=US" -profilePath "/opt/IBM/WebSphere/AppServer/profiles/testProfile" -nodeProfilePath "/opt/IBM/WebSphere/AppServer/profiles/AppSrv" -appServerNodeName "appNode" -enableService "false" -signingCertDN "cn=192.168.0.126,ou=Root Certificate,ou=managerCell,ou=managerNode,o=IBM,c=US" -hostName "192.168.0.126" -personalCertValidityPeriod "1" -signingCertValidityPeriod "15" -keyStorePassword "password" -templatePath "/opt/IBM/WebSphere/AppServer/profileTemplates/cell/dmgr"
+
+"-delete -profileName testProfile
+
+
+{
+    "name": "dev",
+    "description": "development plan",
+    "metadata": {
+        "profilename": "demo",
+        "nodename": "demoNode",
+        "bullets": [
+            "WhoamI?",
+            "Whoareyou?"
+        ]
+    }
+}
+d297c0cb-6934-499f-a129-727b7f33433d
+{
+  "service_id":        "d5179dc8-565f-4082-b0a4-a315c83edb7a",
+  "plan_id":           "0730429f-35de-492f-a4c8-151daee259fb",
+  "organization_guid": "ea81ee9a-fa38-4e40-a195-751c66e847f9",
+  "space_guid":        "de8c0321-6832-4057-834d-20b1da9abac5"
+}
+0a9bd9d4-6dcc-47d1-bab5-4be209a3d913
+{
+  "plan_id": "0730429f-35de-492f-a4c8-151daee259fb",
+  "service_id": "d5179dc8-565f-4082-b0a4-a315c83edb7a",
+  "app_guid": "ad132d9b-df96-4ec8-a48e-f59bbf6b5d67"
+}
