@@ -1,1 +1,0 @@
-DROP PROFILE plan_${plan.name}
