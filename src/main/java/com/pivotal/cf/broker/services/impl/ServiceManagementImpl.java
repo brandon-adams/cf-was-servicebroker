@@ -23,7 +23,6 @@ import com.pivotal.cf.broker.repositories.ServiceInstanceRepository;
 import com.pivotal.cf.broker.services.BaseService;
 import com.pivotal.cf.broker.services.WASService;
 import com.pivotal.cf.broker.services.ServiceManagement;
-import com.pivotal.cf.broker.services.TemplateService;
 import com.pivotal.cf.broker.utils.StringUtils;
 
 @Service
@@ -41,7 +40,7 @@ public class ServiceManagementImpl extends BaseService implements ServiceManagem
 	private ServiceInstanceBindingRepository bindingRepository;
 	
 	@Autowired
-	WASManager wasManager;
+	private WASManager wasManager;
 	
 	@Autowired
 	private Environment env;
@@ -60,17 +59,16 @@ public class ServiceManagementImpl extends BaseService implements ServiceManagem
 			throw new IllegalStateException("There's already an instance of this service");
 		}
 		ServiceInstance instance = new ServiceInstance(serviceRequest.getServiceInstanceId(), serviceDefinition.getId(), plan.getId(), serviceRequest.getOrganizationGuid(), serviceRequest.getSpaceGuid(), "");
-		String profileName = StringUtils.randomString(10);
-		String nodeName = StringUtils.randomString(10);
+		//String profileName = StringUtils.randomString(10);
+		//String nodeName = StringUtils.randomString(10);
 		Map<String,String> config = new HashMap<>();
-		config.put("profilename",profileName);
-		config.put("nodename",nodeName);
+		config.put("profilename",plan.getMetadata().getOther().get("profilename"));
+		config.put("nodename",plan.getMetadata().getOther().get("nodename"));
 		instance.setConfig(config);
 		Map<String,Object> model = new HashMap<>();
 		model.put("plan",plan);
 		model.put("instance",instance);
-		//templateService.execute("instance/create.ftl", model);///////////////////////////////////////////////
-		wasManager.createProfile(instance);
+		wasManager.createAppServer(instance);
 		instance = serviceInstanceRepository.save(instance);
 		return instance;
 	}
@@ -86,8 +84,7 @@ public class ServiceManagementImpl extends BaseService implements ServiceManagem
 		ServiceInstance instance = serviceInstanceRepository.findOne(serviceInstanceId);
 		Map<String,Object> model = new HashMap<>();
 		model.put("instance",instance);
-		//templateService.execute("instance/delete.ftl", model);/////////////////////////////////////////////
-		wasManager.deleteProfile(instance);
+		wasManager.deleteAppServer(instance);
 		serviceInstanceRepository.delete(serviceInstanceId);
 		return true;
 	}
@@ -120,7 +117,7 @@ public class ServiceManagementImpl extends BaseService implements ServiceManagem
 		model.put("binding",binding);
 		model.put("instance",instance);
 		//templateService.execute("binding/create.ftl", model);////////////////////////////////////////////
-		wasManager.createAppServer(binding);
+		//wasManager.createAppServer(binding);
 		binding = bindingRepository.save(binding);
 		return binding;
 	}
@@ -134,7 +131,7 @@ public class ServiceManagementImpl extends BaseService implements ServiceManagem
 		Map<String,Object> model = new HashMap<>();
 		model.put("binding",binding);
 		//templateService.execute("binding/delete.ftl", model);//////////////////////////////////////////////
-		wasManager.deleteAppServer(binding);
+		//wasManager.deleteAppServer(binding);
 		bindingRepository.delete(binding);
 		return true;
 	}

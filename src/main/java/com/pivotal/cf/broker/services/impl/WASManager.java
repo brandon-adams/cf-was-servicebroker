@@ -54,8 +54,9 @@ public class WASManager implements WASService{
 	}
 	
 	@Override
-	public boolean createProfile(ServiceInstance instance) {
-		String profileName = instance.getConfig().get("profilename");
+	public boolean createProfile(Plan plan) {
+		//String profileName = instance.getConfig().get("profilename");
+		String profileName = plan.getMetadata().getOther().get("profilename");
 		//if (new File("/opt/IBM/WebSphere/AppServer/profiles/"+profileName).exists()) return false;
 		String createStmt = env.getProperty("was.manageprofiles.location")
 			   	 		+ " -create -profileName " +profileName
@@ -72,13 +73,15 @@ public class WASManager implements WASService{
 				+profileName+"/properties/portdef.props"
   				+ " | grep -i adminhost | awk '{ print $1 }' | cut -d'=' -f2");
 		String adminConsole = "http://"+env.getProperty("was.host")+":"+output.toString();
-		instance.getConfig().put("adminconsole", adminConsole);
+		//instance.getConfig().put("adminconsole", adminConsole);
+		plan.getMetadata().getOther().put("adminconsole", adminConsole);
 		return true;
 	}
 
 	@Override
-	public boolean deleteProfile(ServiceInstance instance) {
-		String profileName = instance.getConfig().get("profilename");
+	public boolean deleteProfile(Plan plan) {
+		//String profileName = instance.getConfig().get("profilename");
+		String profileName = plan.getMetadata().getOther().get("profilename");
 		//if (new File("/opt/IBM/WebSphere/AppServer/profiles/"+profileName).exists()) return false;
 	   	String deleteStmt = env.getProperty("was.profiles.location")+profileName+"/bin/stopManager.sh;"
 	   	 		+ " " +env.getProperty("was.manageprofiles.location")+" -delete -profileName "+profileName+";"
@@ -88,8 +91,8 @@ public class WASManager implements WASService{
 	}
 
 	@Override
-	public boolean createAppServer(ServiceInstanceBinding binding){
-		ServiceInstance instance = serviceInstanceRepository.findOne(binding.getServiceInstanceId());
+	public boolean createAppServer(ServiceInstance instance){
+		//ServiceInstance instance = serviceInstanceRepository.findOne(binding.getServiceInstanceId());
 		String profileName = instance.getConfig().get("profilename");
 		String nodeName = instance.getConfig().get("nodename");
 		String createStmt = env.getProperty("was.profiles.location")+profileName+"/bin/manageprofiles.sh"
@@ -107,9 +110,11 @@ public class WASManager implements WASService{
 	}
 
 	@Override
-	public boolean deleteAppServer(ServiceInstanceBinding binding){
-		String profileName = binding.getCredentials().get("profilename").toString();
-		String nodeName = binding.getCredentials().get("nodename").toString();
+	public boolean deleteAppServer(ServiceInstance instance){
+		//String profileName = binding.getCredentials().get("profilename").toString();
+		//String nodeName = binding.getCredentials().get("nodename").toString();
+		String profileName = instance.getConfig().get("profilename");
+		String nodeName = instance.getConfig().get("nodename");
 		String deleteStmt = env.getProperty("was.profiles.location")+nodeName+"/bin/removeNode.sh;"
 				+ " "+env.getProperty("was.profiles.location")+profileName+"/bin/manageprofiles.sh"
    				+ " -delete -profileName "+nodeName+";"

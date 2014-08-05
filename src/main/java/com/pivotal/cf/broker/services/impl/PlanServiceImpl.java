@@ -14,7 +14,6 @@ import com.pivotal.cf.broker.repositories.ServiceDefinitionRepository;
 import com.pivotal.cf.broker.repositories.ServiceInstanceRepository;
 import com.pivotal.cf.broker.services.WASService;
 import com.pivotal.cf.broker.services.PlanService;
-import com.pivotal.cf.broker.services.TemplateService;
 
 import freemarker.template.Configuration;
 
@@ -28,7 +27,10 @@ public class PlanServiceImpl implements PlanService {
 	private ServiceDefinitionRepository serviceRepository;
 	
 	@Autowired
-	private ServiceInstanceRepository instanceRepository;	
+	private ServiceInstanceRepository instanceRepository;
+	
+	@Autowired
+	private WASManager wasManager;
 	
 	@Override
 	public Plan create(Plan plan) {
@@ -40,7 +42,7 @@ public class PlanServiceImpl implements PlanService {
 		plan.setServiceDefinition(serviceDefinition);
 		plan.getMetadata().setId(plan.getId());
 		model.put("plan",plan);
-		//templateService.execute("plan/create.ftl", model);
+		wasManager.createProfile(plan);
 		return planRepository.save(plan);
 	}
 
@@ -55,7 +57,7 @@ public class PlanServiceImpl implements PlanService {
 		}
 		Map<String,Object> model = new HashMap<String, Object>();
 		model.put("plan",plan);
-		//templateService.execute("plan/delete.ftl", model);
+		wasManager.deleteProfile(plan);
 		planRepository.delete(plan);
 		return true;
 	}
