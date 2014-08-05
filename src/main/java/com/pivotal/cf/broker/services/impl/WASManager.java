@@ -105,6 +105,7 @@ public class WASManager implements WASService{
   				 + " SOAP_PORT=`cat "+env.getProperty("was.profiles.location")+profileName+"/properties/portdef.props"
   				 + " | grep -i soap | awk '{ print $1 }' | cut -d'=' -f2`;"
   				 + " "+env.getProperty("was.profiles.location")+nodeName+"/bin/addNode.sh 192.168.0.126 $SOAP_PORT";
+		//env.getProperty("was.profiles.location")+nodeName+"/bin/wsadmin.sh -lang jython -f wasControl.py "
 		
 		return runCommand(createStmt);
 	}

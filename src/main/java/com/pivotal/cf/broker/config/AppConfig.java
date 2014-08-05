@@ -29,7 +29,7 @@ public class AppConfig {
 	@Autowired
 	private Environment env;
 
-	/*@Bean
+	@Bean
 	@Primary
 	public DataSource datasource() throws Exception {
 		PoolProperties p = new PoolProperties();
@@ -44,9 +44,9 @@ public class AppConfig {
 		org.apache.tomcat.jdbc.pool.DataSource ds = new org.apache.tomcat.jdbc.pool.DataSource();
 		ds.setPoolProperties(p);
 		return ds;
-	}*/
+	}
 	
-	@Bean
+	/*@Bean
 	@Primary
 	public DataSource datasource() throws Exception {
 		PoolProperties p = new PoolProperties();
@@ -80,6 +80,6 @@ public class AppConfig {
 	    JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
 	    jpaTransactionManager.setEntityManagerFactory(localContainerEntityManagerFactoryBean.getObject());
 	    return jpaTransactionManager;
-	}
+	}*/
 
 }

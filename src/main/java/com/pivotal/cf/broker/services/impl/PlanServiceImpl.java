@@ -14,6 +14,7 @@ import com.pivotal.cf.broker.repositories.ServiceDefinitionRepository;
 import com.pivotal.cf.broker.repositories.ServiceInstanceRepository;
 import com.pivotal.cf.broker.services.WASService;
 import com.pivotal.cf.broker.services.PlanService;
+import com.pivotal.cf.broker.utils.StringUtils;
 
 import freemarker.template.Configuration;
 
@@ -40,6 +41,10 @@ public class PlanServiceImpl implements PlanService {
 		}
 		Map<String,Object> model = new HashMap<String, Object>();
 		plan.setServiceDefinition(serviceDefinition);
+		String profileName = StringUtils.randomString(10);
+		String nodeName = StringUtils.randomString(10);
+		plan.getMetadata().getOther().put("profilename",profileName);
+		plan.getMetadata().getOther().put("nodename",nodeName);
 		plan.getMetadata().setId(plan.getId());
 		model.put("plan",plan);
 		wasManager.createProfile(plan);
