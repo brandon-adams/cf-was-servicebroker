@@ -7,10 +7,10 @@ import com.pivotal.cf.broker.model.ServiceInstance;
 import com.pivotal.cf.broker.model.ServiceInstanceBinding;
 
 public interface WASService {
-	public boolean createProfile(ServiceInstance instance);
-	public boolean deleteProfile(ServiceInstance instance);
-	public boolean createAppServer(ServiceInstanceBinding binding);
-	public boolean deleteAppServer(ServiceInstanceBinding binding);
+	public boolean createProfile(Plan plan);
+	public boolean deleteProfile(Plan plan);
+	public boolean createAppServer(ServiceInstance instance);
+	public boolean deleteAppServer(ServiceInstance instance);
 	
 	//public boolean createUser(ServiceInstanceBinding binding);
 	//public boolean deleteUser(ServiceInstanceBinding binding);
