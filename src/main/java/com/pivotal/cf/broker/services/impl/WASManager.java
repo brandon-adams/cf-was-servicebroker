@@ -40,7 +40,7 @@ public class WASManager implements WASService{
 		try {
 			//shell.setKnownHosts("lib/known_hosts");
 			//shell.addIdentity("src/main/resources/static/id_rsa");
-			shell.addIdentity("/var/lib/tomcat7/webapps/was-broker/WEB-INF/classes/static/id_rsa");
+			shell.addIdentity("/var/lib/tomcat/webapps/was-broker/WEB-INF/classes/static/id_rsa");
 			session = shell.getSession("opstack", "192.168.0.126", 22);
 			Properties config = new java.util.Properties();
 			config.put("StrictHostKeyChecking", "no");
