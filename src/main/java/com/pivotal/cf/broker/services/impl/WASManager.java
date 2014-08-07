@@ -55,20 +55,39 @@ public class WASManager implements WASService{
 	
 	@Override
 	public boolean createProfile(Plan plan) {
-		//String profileName = instance.getConfig().get("profilename");
 		String profileName = plan.getMetadata().getOther().get("profilename");
+		String nodeName = plan.getMetadata().getOther().get("nodename");
 		//if (new File("/opt/IBM/WebSphere/AppServer/profiles/"+profileName).exists()) return false;
-		String createStmt = env.getProperty("was.manageprofiles.location")
+		String profileStmt = env.getProperty("was.manageprofiles.location")
 			   	 		+ " -create -profileName " +profileName
 			   			 + " -profilePath " +env.getProperty("was.profiles.location")+profileName
 			   			 + " -templatePath "+env.getProperty("was.templates.location")+"management"
 			   			 + " -serverType DEPLOYMENT_MANAGER"
+			   			 + " -appServerNodeName "+nodeName+"-AppNode"
+			   			 + " -nodeProfilePath " +env.getProperty("was.profiles.location")+nodeName
 			   			 + " -hostName " +env.getProperty("was.host")
-			   			 + " -cellName " +profileName+"Cell"
-			   			 + " -nodeName " +profileName+"CellManager;"
+			   			 + " -cellName " +profileName+"-Cell"
+			   			 + " -nodeName " +profileName+"-Manager;"
 			   			 + " " +env.getProperty("was.profiles.location")+profileName+"/bin/startManager.sh";
 		
-		runCommand(createStmt);
+		runCommand(profileStmt);
+		
+		String nodeStmt = env.getProperty("was.profiles.location")+profileName+"/bin/manageprofiles.sh"
+ 				 + " -create -profileName "+nodeName
+ 				 + " -profilePath "+env.getProperty("was.profiles.location")+nodeName
+ 				 + " -templatePath "+env.getProperty("was.templates.location")+"cell/default"
+ 				 + " -dmgrProfilePath " + env.getProperty("was.profiles.location")+profileName
+ 				 + " -cellName "+profileName+"-Cell"
+ 				 + " -hostName 192.168.0.126"
+ 				 + " -nodeName "+profileName+"-Manager"
+ 				 + " -appServerNodeName "+nodeName+"-AppNode"
+ 				 + " -portsFile " + env.getProperty("was.profiles.location")+profileName+"/properties/portdef.props &&"
+ 				 + " SOAP_PORT=`cat "+env.getProperty("was.profiles.location")+profileName+"/properties/portdef.props"
+ 				 + " | grep -i soap | awk '{ print $1 }' | cut -d'=' -f2`;"
+ 				 + " "+env.getProperty("was.profiles.location")+nodeName+"/bin/addNode.sh 192.168.0.126 $SOAP_PORT";
+		
+		runCommand(nodeStmt);
+		
 		runCommand("cat "+env.getProperty("was.profiles.location")
 				+profileName+"/properties/portdef.props"
   				+ " | grep -i adminhost | awk '{ print $1 }' | cut -d'=' -f2");
@@ -80,14 +99,24 @@ public class WASManager implements WASService{
 
 	@Override
 	public boolean deleteProfile(Plan plan) {
-		//String profileName = instance.getConfig().get("profilename");
 		String profileName = plan.getMetadata().getOther().get("profilename");
+		String nodeName = plan.getMetadata().getOther().get("nodename");
+		
+		String nodeStmt = env.getProperty("was.profiles.location")+nodeName+"/bin/removeNode.sh;"
+				+ " "+env.getProperty("was.profiles.location")+profileName+"/bin/manageprofiles.sh"
+   				+ " -delete -profileName "+nodeName+";"
+   				+ "rm -rf "+env.getProperty("was.profiles.location")+nodeName;
+		
+		runCommand(nodeStmt);
+		
 		//if (new File("/opt/IBM/WebSphere/AppServer/profiles/"+profileName).exists()) return false;
-	   	String deleteStmt = env.getProperty("was.profiles.location")+profileName+"/bin/stopManager.sh;"
+	   	String profileStmt = env.getProperty("was.profiles.location")+profileName+"/bin/stopManager.sh;"
 	   	 		+ " " +env.getProperty("was.manageprofiles.location")+" -delete -profileName "+profileName+";"
 	   	 		+ " rm -rf " +env.getProperty("was.profiles.location")+profileName;
 	   	
-		return runCommand(deleteStmt);
+	   	runCommand(profileStmt);
+	   	
+		return true;
 	}
 
 	@Override
@@ -95,19 +124,14 @@ public class WASManager implements WASService{
 		//ServiceInstance instance = serviceInstanceRepository.findOne(binding.getServiceInstanceId());
 		String profileName = instance.getConfig().get("profilename");
 		String nodeName = instance.getConfig().get("nodename");
-		String createStmt = env.getProperty("was.profiles.location")+profileName+"/bin/manageprofiles.sh"
-  				 + " -create -profileName "+nodeName
-  				 + " -profilePath "+env.getProperty("was.profiles.location")+nodeName
-  				 + " -templatePath "+env.getProperty("was.templates.location")+"managed"
-  				 + " -cellName "+nodeName+"Node"
-  				 + " -hostName 192.168.0.126"
-  				 + " -nodeName "+nodeName+"Node &&"
-  				 + " SOAP_PORT=`cat "+env.getProperty("was.profiles.location")+profileName+"/properties/portdef.props"
-  				 + " | grep -i soap | awk '{ print $1 }' | cut -d'=' -f2`;"
-  				 + " "+env.getProperty("was.profiles.location")+nodeName+"/bin/addNode.sh 192.168.0.126 $SOAP_PORT";
-		//env.getProperty("was.profiles.location")+nodeName+"/bin/wsadmin.sh -lang jython -f wasControl.py "
+		String serverName = instance.getConfig().get("servername");
+		String serverStmt = env.getProperty("was.profiles.location")+profileName+"/bin/wsadmin.sh -lang jython -f"
+				+ " createAppServer.py " +nodeName+"-Manager"+" "+serverName;
 		
-		return runCommand(createStmt);
+		runCommand(serverStmt);
+		System.out.println(output.toString());
+		//instance.getConfig().put("serverinfo", output.toString());
+		return true;
 	}
 
 	@Override
@@ -116,12 +140,11 @@ public class WASManager implements WASService{
 		//String nodeName = binding.getCredentials().get("nodename").toString();
 		String profileName = instance.getConfig().get("profilename");
 		String nodeName = instance.getConfig().get("nodename");
-		String deleteStmt = env.getProperty("was.profiles.location")+nodeName+"/bin/removeNode.sh;"
-				+ " "+env.getProperty("was.profiles.location")+profileName+"/bin/manageprofiles.sh"
-   				+ " -delete -profileName "+nodeName+";"
-   				+ "rm -rf "+env.getProperty("was.profiles.location")+nodeName;
+		String serverName = instance.getConfig().get("servername");
+		String serverStmt = env.getProperty("was.profiles.location")+profileName+"/bin/wsadmin.sh -lang jython -f"
+				+ " deleteAppServer.py " +nodeName+"-Manager"+" "+serverName;
 		
-		return runCommand(deleteStmt);
+		return runCommand(serverStmt);
 	}
 	
 	private boolean runCommand(String cmd){
@@ -142,7 +165,7 @@ public class WASManager implements WASService{
 					if (i < 0)
 						break;
 					output.append(new String(tmp, 0, i));
-					//System.out.print(new String(tmp, 0, i));
+					System.out.print(new String(tmp, 0, i));
 				}
 				if (channel.isClosed()) {
 					if (in.available() > 0)

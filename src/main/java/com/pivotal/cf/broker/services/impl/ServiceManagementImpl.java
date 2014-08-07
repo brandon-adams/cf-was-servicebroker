@@ -40,7 +40,7 @@ public class ServiceManagementImpl extends BaseService implements ServiceManagem
 	private ServiceInstanceBindingRepository bindingRepository;
 	
 	@Autowired
-	private WASManager wasManager;
+	private WASService wasManager;
 	
 	@Autowired
 	private Environment env;
@@ -64,6 +64,8 @@ public class ServiceManagementImpl extends BaseService implements ServiceManagem
 		Map<String,String> config = new HashMap<>();
 		config.put("profilename",plan.getMetadata().getOther().get("profilename"));
 		config.put("nodename",plan.getMetadata().getOther().get("nodename"));
+		String serverName = StringUtils.randomString(10);
+		config.put("servername",serverName);
 		instance.setConfig(config);
 		Map<String,Object> model = new HashMap<>();
 		model.put("plan",plan);

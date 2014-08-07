@@ -10,8 +10,6 @@
         "name": "DemoMetadata",
         "displayName": "DemoPlanMetadata",
         "description": "Demo Development Plan Metadata",
-        "profilename": "demo",
-        "nodename": "demoNode",
         "hostname": "192.168.0.126",
         "bullets": [
             "fake profile",
@@ -21,8 +19,8 @@
 }
 d297c0cb-6934-499f-a129-727b7f33433d
 {
-  "service_id":        "d5179dc8-565f-4082-b0a4-a315c83edb7a",
-  "plan_id":           "0730429f-35de-492f-a4c8-151daee259fb",
+  "service_id":        "4efc3868-ed9d-48de-8b64-075666a78a3c",
+  "plan_id":           "94a2dc90-93fa-4b4c-9b11-da9b0da07678",
   "organization_guid": "ea81ee9a-fa38-4e40-a195-751c66e847f9",
   "space_guid":        "de8c0321-6832-4057-834d-20b1da9abac5"
 }
@@ -31,4 +29,25 @@ d297c0cb-6934-499f-a129-727b7f33433d
   "plan_id": "0730429f-35de-492f-a4c8-151daee259fb",
   "service_id": "d5179dc8-565f-4082-b0a4-a315c83edb7a",
   "app_guid": "ad132d9b-df96-4ec8-a48e-f59bbf6b5d67"
+}
+
+
+{
+  id: "94a2dc90-93fa-4b4c-9b11-da9b0da07678"
+  name: "demo"
+  description: " Demo Development Plan"
+  metadata: {
+    id: "94a2dc90-93fa-4b4c-9b11-da9b0da07678"
+    name: "DemoMetadata"
+    description: "Demo Development Plan Metadata"
+    bullets: [2]
+      0:  "fake profile"
+      1:  "means nothing"
+    -
+    displayName: "DemoPlanMetadata"
+    profilename: "F5V7jvYL8E2"
+    hostname: "192.168.0.126"
+    nodename: "IamJkb6ySHG"
+    adminconsole: "http://192.168.0.126:9064 9047 "
+    }-
 }

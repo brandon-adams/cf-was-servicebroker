@@ -32,7 +32,7 @@ public class CatalogServiceImpl extends BaseService implements CatalogService{
 	private ServiceInstanceRepository serviceInstanceRepository;
 	
 	@Autowired
-	private WASService dbService;
+	private WASService wasManager;
 	
 	@Override
 	public ServiceDefinition createServiceDefinition(ServiceDefinition serviceDefinition) {

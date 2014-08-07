@@ -16,8 +16,6 @@ import com.pivotal.cf.broker.services.WASService;
 import com.pivotal.cf.broker.services.PlanService;
 import com.pivotal.cf.broker.utils.StringUtils;
 
-import freemarker.template.Configuration;
-
 @Service
 public class PlanServiceImpl implements PlanService {
 	
@@ -31,7 +29,7 @@ public class PlanServiceImpl implements PlanService {
 	private ServiceInstanceRepository instanceRepository;
 	
 	@Autowired
-	private WASManager wasManager;
+	private WASService wasManager;
 	
 	@Override
 	public Plan create(Plan plan) {
