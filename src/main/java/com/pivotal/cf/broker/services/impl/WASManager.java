@@ -61,7 +61,7 @@ public class WASManager implements WASService{
 		String profileStmt = env.getProperty("was.manageprofiles.location")
 			   	 		+ " -create -profileName " +profileName
 			   			 + " -profilePath " +env.getProperty("was.profiles.location")+profileName
-			   			 + " -templatePath "+env.getProperty("was.templates.location")+"management"
+			   			 + " -templatePath "+env.getProperty("was.templates.location")+"cell/dmgr"
 			   			 + " -serverType DEPLOYMENT_MANAGER"
 			   			 + " -appServerNodeName "+nodeName+"-AppNode"
 			   			 + " -nodeProfilePath " +env.getProperty("was.profiles.location")+nodeName
@@ -83,8 +83,8 @@ public class WASManager implements WASService{
  				 + " -appServerNodeName "+nodeName+"-AppNode"
  				 + " -portsFile " + env.getProperty("was.profiles.location")+profileName+"/properties/portdef.props &&"
  				 + " SOAP_PORT=`cat "+env.getProperty("was.profiles.location")+profileName+"/properties/portdef.props"
- 				 + " | grep -i soap | awk '{ print $1 }' | cut -d'=' -f2`;"
- 				 + " "+env.getProperty("was.profiles.location")+nodeName+"/bin/addNode.sh 192.168.0.126 $SOAP_PORT";
+ 				 + " | grep -i soap | awk '{ print $1 }' | cut -d'=' -f2`;";
+ 				// + " "+env.getProperty("was.profiles.location")+nodeName+"/bin/addNode.sh 192.168.0.126 $SOAP_PORT";
 		
 		runCommand(nodeStmt);
 		
@@ -126,7 +126,7 @@ public class WASManager implements WASService{
 		String nodeName = instance.getConfig().get("nodename");
 		String serverName = instance.getConfig().get("servername");
 		String serverStmt = env.getProperty("was.profiles.location")+profileName+"/bin/wsadmin.sh -lang jython -f"
-				+ " createAppServer.py " +nodeName+"-Manager"+" "+serverName;
+				+ " createAppServer.py " +nodeName+"-AppNode"+" "+serverName;
 		
 		runCommand(serverStmt);
 		System.out.println(output.toString());
@@ -142,7 +142,7 @@ public class WASManager implements WASService{
 		String nodeName = instance.getConfig().get("nodename");
 		String serverName = instance.getConfig().get("servername");
 		String serverStmt = env.getProperty("was.profiles.location")+profileName+"/bin/wsadmin.sh -lang jython -f"
-				+ " deleteAppServer.py " +nodeName+"-Manager"+" "+serverName;
+				+ " deleteAppServer.py " +nodeName+"-AppNode"+" "+serverName;
 		
 		return runCommand(serverStmt);
 	}

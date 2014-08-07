@@ -19,8 +19,8 @@
 }
 d297c0cb-6934-499f-a129-727b7f33433d
 {
-  "service_id":        "4efc3868-ed9d-48de-8b64-075666a78a3c",
-  "plan_id":           "94a2dc90-93fa-4b4c-9b11-da9b0da07678",
+  "service_id":        "8ee7afeb-09d9-4dc3-96cf-617076bbcafc",
+  "plan_id":           "875bfeda-b52d-4cb3-afa0-85fa3063e4d5",
   "organization_guid": "ea81ee9a-fa38-4e40-a195-751c66e847f9",
   "space_guid":        "de8c0321-6832-4057-834d-20b1da9abac5"
 }
