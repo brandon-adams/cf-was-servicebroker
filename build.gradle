@@ -41,7 +41,7 @@ dependencies {
 	compile("org.springframework:spring-context-support")
 	//compile("org.springframework.boot:spring-boot-starter-freemarker")
 	compile("com.jcraft:jsch:0.1.51")
-	testCompile("org.springframework.boot:spring-boot-starter-test")
+	//testCompile("org.springframework.boot:spring-boot-starter-test")
 	//testCompile("com.h2database:h2:1.4.179")
 }
 
