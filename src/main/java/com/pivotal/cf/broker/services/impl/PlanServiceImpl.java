@@ -39,9 +39,9 @@ public class PlanServiceImpl implements PlanService {
 		}
 		Map<String,Object> model = new HashMap<String, Object>();
 		plan.setServiceDefinition(serviceDefinition);
-		String profileName = StringUtils.randomString(10);
-		String nodeName = StringUtils.randomString(10);
-		plan.getMetadata().getOther().put("profilename",profileName);
+		String profileName = StringUtils.randomString(5);
+		String nodeName = profileName + "-mngd";
+		plan.getMetadata().getOther().put("profilename",profileName + "-dmgr");
 		plan.getMetadata().getOther().put("nodename",nodeName);
 		plan.getMetadata().setId(plan.getId());
 		model.put("plan",plan);
