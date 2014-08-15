@@ -64,7 +64,8 @@ public class ServiceManagementImpl extends BaseService implements ServiceManagem
 		Map<String,String> config = new HashMap<>();
 		config.put("profilename",plan.getMetadata().getOther().get("profilename"));
 		config.put("nodename",plan.getMetadata().getOther().get("nodename"));
-		String serverName = StringUtils.randomString(5) + "srvr";
+		config.put("appnodename",plan.getMetadata().getOther().get("appnodename"));
+		String serverName = StringUtils.randomString(5) + "-srvr";
 		config.put("servername",serverName);
 		instance.setConfig(config);
 		Map<String,Object> model = new HashMap<>();
