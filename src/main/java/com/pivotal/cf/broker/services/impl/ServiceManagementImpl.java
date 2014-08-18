@@ -58,14 +58,14 @@ public class ServiceManagementImpl extends BaseService implements ServiceManagem
 		if(serviceInstanceRepository.exists(serviceRequest.getServiceInstanceId())){
 			throw new IllegalStateException("There's already an instance of this service");
 		}
+		String serverName = StringUtils.randomString(5) + "-srvr";
 		ServiceInstance instance = new ServiceInstance(serviceRequest.getServiceInstanceId(), 
 				serviceDefinition.getId(), plan.getId(), serviceRequest.getOrganizationGuid(), 
-				serviceRequest.getSpaceGuid(), "");
+				serviceRequest.getSpaceGuid(), serverName);
 		Map<String,String> config = new HashMap<>();
 		config.put("profilename",plan.getMetadata().getOther().get("profilename"));
 		config.put("nodename",plan.getMetadata().getOther().get("nodename"));
 		config.put("appnodename",plan.getMetadata().getOther().get("appnodename"));
-		String serverName = StringUtils.randomString(5) + "-srvr";
 		config.put("servername",serverName);
 		instance.setConfig(config);
 		Map<String,Object> model = new HashMap<>();
